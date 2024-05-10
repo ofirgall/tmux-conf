@@ -6,6 +6,8 @@ Extensible tmux config
 
 ### TODO
 * toclip
+* design
+* verify location
 
 ### TODOC
 * osc52

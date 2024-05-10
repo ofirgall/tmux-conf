@@ -1,0 +1,13 @@
+{
+    "root": {
+        "Home": ["send-key C-a"],
+        "End": "send-key C-e"
+    },
+    "prefix": {
+        "r": "source-file ~/.tmux.conf; display 'Config Reloaded!'"
+    },
+    "suspended": {
+        "Home": "send-key C-a",
+        "End": "send-key C-e"
+    }
+}
