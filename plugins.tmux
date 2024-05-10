@@ -1,75 +1,67 @@
-
-is_wsl="uname -a | grep Microsoft"
-
-############################
-##### PLUGINS SETTINGS #####
-############################
-set -g @continuum-restore 'on'
-set -g @continuum-save-interval '1'
-set -g @emulate-scroll-for-no-mouse-alternate-buffer "on"
-set -g @tnotify-verbose 'on'
-set -g @tnotify-verbose-msg '#S: #I #W is done!'
-set -g @fzf-url-fzf-options '--reverse'
-set -g @fuzzback-fzf-layout 'default'
-set -g @command-capture-prompt-pattern ' $ '
-set -g @thumbs-command 'echo -n {} | $HOME/dotfiles_scripts/misc/toclip; tmux display-message "Copied {}"'
-set -g @resurrect-processes 'false' # Dont restore programs
-set -g @tnotify-sleep-duration '2'
-set -g @tmux_window_name_ignored_programs "['sqlite3']"
-set -g @tmux_window_name_dir_programs "['nvim', 'git', 'fugitive', 'git_tree', 'kv']"
-set -g @ttm-load-default-macros off # no default macros
-set -g @ttm-window-mode 'vertical'
-if-shell "$is_wsl" "set -g @browser_brotab_timeout '15.0'"
-if-shell "$is_wsl" "set -g @browser_wait_timeout '15.0'"
-set -g @new_browser_window 'vivaldi --new-window'
-set -g @extrakto_split_direction 'p'
-set -g @extrakto_clip_tool 'toclip'
-set -g @extrakto_popup_size '50%'
-set -g @extrakto_grab_area 'window full'
-set -g @extrakto_copy_key 'y'
-set -g @extrakto_insert_key 'enter'
-
-# -------------------------
-#	    PLUGINS BINDS
-# -------------------------
-##### TMUX-SUSPEND #####
-# tmux-suspend, focus on nested ssh session (Alt+Enter)
-set -g @suspend_key 'M-Enter'
-
-##### TMUX-OPEN #####
-# Open text in google search
-set -g @open-s 'https://www.google.com/search?q='
-
-##### TMUX-FZF-URL #####
-set -g @fzf-url-bind 'u'
-
-##### TMUX-FUZZBACK #####
-set -g @fuzzback-bind f
-
-##### TMUX_CAPTURE_LAST_COMMAND_OUTPUT #####
-set -g @command-capture-key l
-
-###################
-##### PLUGINS #####
-###################
-set -g @plugin 'tmux-plugins/tmux-open'
+# Automagically sets window name by programs
 set -g @plugin 'ofirgall/tmux-window-name'
+
+# Restore tmux sessions on startup
 set -g @plugin 'tmux-plugins/tmux-resurrect'
+
+# Save tmux sessions in background
 set -g @plugin 'tmux-plugins/tmux-continuum'
+
+# Improve mouse usability
 set -g @plugin 'nhdaly/tmux-better-mouse-mode'
-set -g @plugin 'MunifTanjim/tmux-suspend'
-set -g @plugin 'ofirgall/tmux-browser'
-set -g @plugin 'ofirgall/tmux-notify'
-set -g @plugin 'wfxr/tmux-fzf-url'
-set -g @plugin 'roosta/tmux-fuzzback'
-set -g @plugin 'ofirgall/tmux_capture_last_command_output'
-set -g @plugin 'fcsonline/tmux-thumbs'
-set -g @plugin 'schasse/tmux-jump'
-set -g @plugin 'Neo-Oli/tmux-text-macros'
-set -g @plugin 'sainnhe/tmux-fzf'
+
+# Fuzzy find text to copy/insert
 set -g @plugin 'laktak/extrakto'
 
-###########
-# RUN TPM #
-###########
+##### roosta/tmux-fuzzback #####
+# Search line to jump to with fzf
+set -g @fuzzback-bind f # (<prefix> f)
+set -g @plugin 'roosta/tmux-fuzzback'
+
+##### tmux-plugins/tmux-open #####
+# Bind: "o" in copy mode to open selected text
+# "s" to open selected text in google search
+set -g @open-s 'https://www.google.com/search?q='
+set -g @plugin 'tmux-plugins/tmux-open'
+
+##### wfxr/tmux-fzf-url #####
+# Select url to open with fzf
+set -g @fzf-url-bind 'u' # (<prefix> u)
+set -g @plugin 'wfxr/tmux-fzf-url'
+
+# Jump to a word like vimium <prefix> j
+set -g @plugin 'schasse/tmux-jump'
+
+# Select text to insert from a configured file
+# Bind: M-m (alt+m)
+# TODO: configure the custom-macros
+set -g @plugin 'Neo-Oli/tmux-text-macros'
+
+# Execute tmux commands easily with fzf menu's
+# Bind: <prefix> F (shift+f)
+set -g @plugin 'sainnhe/tmux-fzf'
+
+# Open a browser sesison attached to the current session
+# Bind: <prefix> b
+set -g @plugin 'ofirgall/tmux-browser'
+
+# Notify when a long command finish on a remote ssh
+# Binds:
+#   Start monitoring <prefix> m
+#   Stop monitoring  <prefix> M
+#   Start monitoring & focus when finish <prefix> M-m (alt+m)
+set -g @plugin 'ofirgall/tmux-notify'
+
+##### MunifTanjim/tmux-suspend #####
+# Suspend client session to focus on nested ssh session (Alt+Enter)
+set -g @suspend_key 'M-Enter'
+set -g @plugin 'MunifTanjim/tmux-suspend'
+
+##### ofirgall/tmux_capture_last_command_output #####
+# Edit last command ran (doesn't work on all prompts)
+set -g @command-capture-key l # (<prefix> l)
+set -g @plugin 'ofirgall/tmux_capture_last_command_output'
+
+
+# RUN TPM
 run '$HOME/.tmux/plugins/tpm/tpm'
